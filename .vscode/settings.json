@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "undefined/subscriptions/af100cb4-9f0b-4c73-80fb-4411f3383647/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/prohub-server",
+  "appService.deploySubpath": "backend"
+}

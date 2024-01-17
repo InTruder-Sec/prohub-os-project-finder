@@ -5,6 +5,7 @@ import { createContext, useEffect, useState } from "react";
 import { Toaster } from "./components/ui/toaster";
 
 let globalToken;
+let ENDPOINT = "https://prohub-server.azurewebsites.net";
 
 function App() {
   const [token, settoken] = useState("");
@@ -29,4 +30,4 @@ const getCookie = (name: string) => {
 };
 
 export default App;
-export { globalToken };
+export { globalToken, ENDPOINT };

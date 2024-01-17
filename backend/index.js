@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: process.env.CLIENT_URL,
   credentials: true,
 };
 
@@ -22,6 +22,6 @@ app.use("/api/user", user);
 
 await mongoose.connect(process.env.SERVER_URL);
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.listen(8080, () => {
+  console.log("Server running on port 8080");
 });

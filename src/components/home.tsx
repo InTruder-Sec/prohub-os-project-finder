@@ -20,8 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Label } from "@radix-ui/react-dropdown-menu";
-
 import {
   Card,
   CardContent,
@@ -32,8 +30,9 @@ import {
 } from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { useContext, useEffect, useRef, useState } from "react";
-import { globalToken } from "@/App";
+import { ENDPOINT, globalToken } from "@/App";
 import { useToast } from "./ui/use-toast";
+import SearchWindow from "./SearchWindow";
 
 function Home() {
   const { toast } = useToast();
@@ -41,7 +40,7 @@ function Home() {
   const inputRef = useRef(null);
   const tagRef = useRef(null);
 
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<Record<string, any>>({});
   const [repos, setRepos] = useState(["Please wait till we fetch your repos!"]);
 
   const [latestRepo, setLatestRepo] = useState([]);
@@ -49,7 +48,7 @@ function Home() {
   const [projects, setprojects] = useState("");
   useEffect(() => {
     const fetchRepos = async () => {
-      fetch("http://localhost:5000/api/user/profile?token=" + token, {
+      fetch(`${ENDPOINT}/api/user/profile?token=` + token, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -68,19 +67,15 @@ function Home() {
           });
           setprojects(pro);
 
-          fetch("http://localhost:5000/api/user/search?latest=true").then(
-            (res) => {
-              res.json().then((res) => {
-                setLatestRepo(res.data);
-              });
-            }
-          );
+          fetch(`${ENDPOINT}/api/user/latest`).then((res) => {
+            res.json().then((res) => {
+              setLatestRepo(res.data);
+            });
+          });
         });
     };
     fetchRepos();
-  }, [token, userData]);
-
-  console.log(latestRepo);
+  }, [token, setUserData]);
 
   const repository = latestRepo?.map((repo) => {
     return (
@@ -96,7 +91,7 @@ function Home() {
   });
 
   const getRepos = async () => {
-    fetch("http://localhost:5000/api/user/profile?token=" + token, {
+    fetch(`${ENDPOINT}/api/user/profile?token=` + token, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -110,7 +105,6 @@ function Home() {
           }
         );
       });
-    fetch("http://localhost:5000/api/user/search?latest=true");
   };
 
   const submitRepo = async () => {
@@ -132,7 +126,7 @@ function Home() {
       repoLocation: "",
     };
     const tags = tagRef.current.value.toUpperCase().split(",");
-    repos.map((repo) => {
+    repos.map((repo: any) => {
       if (repo.name === value) {
         formData._id = userData.userDetails._id;
         formData.repoName = repo.name;
@@ -143,7 +137,7 @@ function Home() {
         formData.repoLocation =
           userData.userDetails.city + ", " + userData.userDetails.country;
 
-        fetch("http://localhost:5000/api/user/add", {
+        fetch(`${ENDPOINT}/api/user/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -175,8 +169,11 @@ function Home() {
     });
   };
 
+  const [SearchState, setSearchState] = useState(false);
+
   return (
     <>
+      <SearchWindow SearchState={SearchState} setSearchState={setSearchState} />
       <Drawer>
         <div className="w-full h-full bg-slate-50 text-slate-50 dark:text-slate-50 dark:bg-inherit mt-0 ">
           <div className="mt-10 mx-40 text-8xl text-slate-800 dark:text-slate-50 text-center">
@@ -189,16 +186,33 @@ function Home() {
               can help you with sorting projects based on your skills.
             </div>
             <img src={image} className="m-auto" alt="projects" width="30%" />
-            <Button
-              className="m-auto"
-              onClick={() => {
-                // window.scrollTo(0, 1000);Change this
-              }}
-            >
-              Explore Projects
-            </Button>
+            <div className="flex m-auto w-full justify-center">
+              <Button
+                className="m-10"
+                onClick={() => {
+                  document.getElementById("latest").scrollIntoView();
+                }}
+              >
+                Your Projects
+              </Button>
+              <Button
+                className="m-10"
+                onClick={() => {
+                  setSearchState(true);
+                }}
+              >
+                Search Projects
+              </Button>
+            </div>
           </div>
           <div className="mt-10 mx-40 text-2xl text-slate-400">
+            Latest projects
+          </div>
+          <div className="h-1 w-5/6 bg-slate-50 m-auto opacity-10 mt-2"></div>
+          <div className="mt-10 px-20 flex flex-wrap justify-center">
+            {repository}
+          </div>
+          <div className="mt-10 mx-40 text-2xl text-slate-400" id="latest">
             Your projects
           </div>
           <div className="h-1 w-5/6 bg-slate-50 m-auto opacity-10 mt-2"></div>
@@ -249,13 +263,6 @@ function Home() {
               </DrawerTrigger>
             </div>
           </div>
-          <div className="mt-10 mx-40 text-2xl text-slate-400" id="latest">
-            Latest projects
-          </div>
-          <div className="h-1 w-5/6 bg-slate-50 m-auto opacity-10 mt-2"></div>
-          <div className="mt-10 px-20 flex flex-wrap justify-center">
-            {repository}
-          </div>
         </div>
         <DrawerContent>
           <DrawerHeader>
@@ -267,15 +274,15 @@ function Home() {
           <DrawerFooter>
             <div className="grid gap-4 py-4">
               <div className="grid items-center gap-4">
-                <Label htmlFor="name" className="w-fit">
+                <label htmlFor="name" className="w-fit">
                   Name:
-                </Label>
+                </label>
                 <Select>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Repository Name" ref={inputRef} />
                   </SelectTrigger>
                   <SelectContent>
-                    {repos.map((repo) => (
+                    {repos.map((repo: any) => (
                       <SelectItem value={repo.name}>{repo.name}</SelectItem>
                     ))}
                   </SelectContent>
@@ -283,9 +290,9 @@ function Home() {
               </div>
 
               <div className="grid items-center gap-4">
-                <Label htmlFor="username" className="w-fit">
+                <label htmlFor="username" className="w-fit">
                   Skills Required:
-                </Label>
+                </label>
                 <Textarea
                   className="w-full"
                   ref={tagRef}

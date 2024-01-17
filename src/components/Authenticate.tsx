@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import svg from "./../assets/Spinner-1s-200px.svg";
 import { Button } from "./ui/button";
+import { ENDPOINT } from "@/App";
 
 function Authenticate() {
   const [status, setstatus] = useState(loading);
@@ -16,7 +17,7 @@ function Authenticate() {
   useEffect(() => {
     if (token != undefined) {
       setstatus(loading);
-      fetch("http://localhost:5000/api/user/auth", {
+      fetch(`${ENDPOINT}/api/user/auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

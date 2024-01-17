@@ -1,9 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "./ui/button";
 import svg from "./../assets/Spinner-1s-200px.svg";
-import { ModeToggle } from "./ui/toggle";
-import { globalToken } from "@/App";
+import { ENDPOINT, globalToken } from "@/App";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +29,7 @@ function Navbar() {
 
   const [editProfile, seteditProfile] = useState(false);
 
-  const [userData, setuserData] = useState("");
+  const [userData, setuserData] = useState<any>("");
   const [onBoardingDetails, setonBoardingDetails] = useState({
     _id: "",
     name: "",
@@ -43,8 +42,9 @@ function Navbar() {
   const [newUser, setnewUser] = useState(false);
 
   useEffect(() => {
-    if (token !== undefined || token?.length > 0 || token === "") {
-      fetch("http://localhost:5000/api/user/profile?token=" + token, {
+    console.log(token);
+    if (token !== "" && token !== "null") {
+      fetch(`${ENDPOINT}/api/user/profile?token=` + token, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -78,7 +78,7 @@ function Navbar() {
       onBoardingDetails.skills !== ""
     ) {
       console.log(onBoardingDetails);
-      fetch("http://localhost:5000/api/user/onBoarding", {
+      fetch(`${ENDPOINT}/api/user/onBoarding`, {
         method: "POST",
         body: JSON.stringify(onBoardingDetails),
         headers: {
@@ -87,8 +87,6 @@ function Navbar() {
       })
         .then((res) => res.json())
         .then((res) => {
-          // Add object of res to userDetails
-          console.log(res.data);
           setnewUser(false);
           seteditProfile(false);
           setonBoardingDetails(res.data);
@@ -243,7 +241,7 @@ const LoginButton = () => {
 
 const Profile = (props) => {
   const logout = () => {
-    document.cookie = `token=`;
+    document.cookie = `token=null`;
     window.location.href = "/";
   };
   console.log(props.avatar);

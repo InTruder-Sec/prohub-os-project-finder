@@ -16,27 +16,33 @@ export default async function getProfile(req, res) {
       })
         .then((result) => result.json())
         .then((result) => {
-          // Check if user exsist in database
-          User.findOne({ name: result.login })
-            .populate("repos")
-            .then((resul) => {
-              if (resul !== null) {
-                res.status(200).json({
-                  code: 200,
-                  message: "OK",
-                  data: result,
-                  onBoarding: false,
-                  userDetails: resul,
-                });
-              } else {
-                res.status(200).json({
-                  code: 200,
-                  message: "OK",
-                  data: result,
-                  onBoarding: true,
-                });
-              }
-            });
+          if (result.message === "Bad credentials") {
+            res
+              .status(401)
+              .json({ code: 401, message: "Unauthorized", onBoarding: false });
+          } else {
+            // Check if user exsist in database
+            User.findOne({ name: result.login })
+              .populate("repos")
+              .then((resul) => {
+                if (resul !== null) {
+                  res.status(200).json({
+                    code: 200,
+                    message: "OK",
+                    data: result,
+                    onBoarding: false,
+                    userDetails: resul,
+                  });
+                } else {
+                  res.status(200).json({
+                    code: 200,
+                    message: "OK",
+                    data: result,
+                    onBoarding: true,
+                  });
+                }
+              });
+          }
         });
     } catch (error) {
       console.log(error);
