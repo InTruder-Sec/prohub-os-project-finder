@@ -111,7 +111,7 @@ const SearchWindow = (props) => {
             <div className="p-4">Running 416HP engine…</div>
           </CommandLoading>
         )}
-        <CommandEmpty>No results found</CommandEmpty>
+        <CommandEmpty>No results found! Try changing filters...</CommandEmpty>
         <CommandGroup heading="">
           {results.map((document) => (
             <CommandItem

@@ -4,7 +4,7 @@ Prohub is an extended version of Github, helping students and professionals to f
 
 ### 🔗 Link
 
-[Deploying Soon ](/)
+[Deployed Link](https://prohub.netlify.app/)
 
 ### 💻 Local Environment
 
@@ -18,13 +18,15 @@ npm run dev
 
 **Back-End**
 
-_⚠️Note: You will require a `.env` file with the following values_
+_⚠️Note: You will require a `.env` file with the following values. Please refer .env.example in backend folder_
 
     GITHUB_CLIENT_SECRET=GITHUB_OAUTH_CLIENT_SECRET_TOKEN
 
     GITHUB_CLIENT_ID=GITHUB_OAUTH_CLIENT_TOKEN
 
     SERVER_URL=MONGODB_CLUSTER_URL
+
+    CLIENT_URL=FRONT_END_LINK
 
 ```
 cd backend
