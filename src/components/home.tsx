@@ -177,7 +177,7 @@ function Home() {
       <Drawer>
         <div className="w-full h-full bg-slate-50 text-slate-50 dark:text-slate-50 dark:bg-inherit mt-0 ">
           <div className="mt-10 mx-40 text-8xl text-slate-800 dark:text-slate-50 text-center">
-            <div className="w-5/6 mx-auto mt-20">
+            <div className="w-5/6 mx-auto mt-20 font-extrabold">
               Ever had problems while searching projects?
             </div>
             <div className="text-xl mt-8 mb-4 w-4/6 m-auto ">

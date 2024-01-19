@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "./ui/textarea";
+import logo from "./../assets/logo.png";
 
 function Navbar() {
   const token = useContext(globalToken);
@@ -98,9 +99,9 @@ function Navbar() {
 
   return (
     <>
-      <div className="h-20 w-100 bg-white dark:bg-zinc-800 px-10 py-4">
-        <div className="text-3xl absolute mt-2 text-slate-800 dark:text-inherit ">
-          Prohub
+      <div className="h-20 w-100 bg-white dark:bg-zinc-900 px-10 py-4">
+        <div className="text-3xl absolute  text-slate-800 dark:text-inherit ">
+          <img src={logo} alt="logo" width="50px" />
         </div>
         <span className="absolute right-10 flex">
           <span className="mt-1.5 mr-5">{/* <ModeToggle />{" "} */}</span>

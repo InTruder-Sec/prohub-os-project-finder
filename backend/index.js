@@ -22,6 +22,6 @@ app.use("/api/user", user);
 
 await mongoose.connect(process.env.SERVER_URL);
 
-app.listen(8080, () => {
-  console.log("Server running on port 8080");
+app.listen(process.env.PORT || 8080, () => {
+  console.log(`Server running on port ${process.env.PORT || 8080}`);
 });
