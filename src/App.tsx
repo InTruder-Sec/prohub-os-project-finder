@@ -7,8 +7,8 @@ import getCookie from "./utils/getCookie";
 import Footer from "./components/Footer";
 
 let globalToken: string | any = createContext("");
-// let ENDPOINT = "https://prohub-server.azurewebsites.net";
-let ENDPOINT = "http://localhost:8080";
+let ENDPOINT = "https://prohub-server.azurewebsites.net";
+// let ENDPOINT = "http://localhost:8080";
 
 function App() {
   const [token, settoken] = useState("");
@@ -18,7 +18,7 @@ function App() {
     settoken(getToken);
   }, [getToken]);
 
-  <globalToken.Provider value={token}></globalToken.Provider>;
+  globalToken = createContext(token);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
